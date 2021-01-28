@@ -1,37 +1,25 @@
 class Solution(object):
     
-    def dfs(self, grid, i, j):
-
-        if i < 0 or i >= len(grid) or j < 0 or j >= len(grid[0]) or grid[i][j] != '1':
-            return
-        
-        grid[i][j] = 'visited'
-        self.dfs(grid, i+1, j)
-        self.dfs(grid, i-1, j)
-        self.dfs(grid, i, j+1)
-        self.dfs(grid, i, j-1)
     
     def dfs_iter(self, grid, i, j):
-        rowCol = [-1, 0, 0, 1]
-        colCol = [0, -1, 1, 0]
+        rows = [-1, 0, 0, 1]
+        cols = [0, -1, 1, 0]
         stack = []
         
         stack.append((i,j))
         
+        # do DFS and mark as visited 
         while stack:
             curr = stack.pop()
-            grid[curr[0]][curr[1]] = 'visited'
+            grid[curr[0]][curr[1]] = '0'
             
-            for i in range(4):
-                x = curr[0] + rowCol[i]
-                y = curr[1] + colCol[i]
+            for index in range(len(rows)):
+                y = curr[0] + rows[index]
+                x = curr[1] + cols[index]
                 
-                if x >= 0 and x < len(grid) and y >= 0 and y < len(grid[0]) and grid[x][y] == '1':
-                    stack.append((x, y))
-                    print((x,y))
-            
-        
-        
+                # check that its not out of bounds and is land
+                if x >= 0 and y>=0 and x<len(grid[0]) and y<len(grid) and grid[y][x] == '1':
+                    stack.append((y, x))
             
             
         
@@ -45,8 +33,10 @@ class Solution(object):
         
         for i in range(len(grid)):
             for j in range(len(grid[0])):
+                # found a new island
                 if grid[i][j] == '1':
                     ans += 1;
+                    # DFS and mark all "lands" of that island
                     self.dfs_iter(grid, i, j)
         
         return ans
