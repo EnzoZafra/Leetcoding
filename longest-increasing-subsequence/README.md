@@ -1,3 +1,4 @@
+[Discussion Post (created on 3/1/2021 at 21:42)](https://leetcode.com/problems/longest-increasing-subsequence/solution/)  
 <h2>300. Longest Increasing Subsequence</h2><h3>Medium</h3><hr><div><p>Given an integer array <code>nums</code>, return the length of the longest strictly increasing subsequence.</p>
 
 <p>A <strong>subsequence</strong> is a sequence that can be derived from an array by deleting some or no elements without changing the order of the remaining elements. For example, <code>[3,6,2,7]</code> is a subsequence of the array <code>[0,3,1,6,2,2,7]</code>.</p>
