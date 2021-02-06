@@ -1,4 +1,17 @@
-from bisect import bisect_right
+def my_bisect(a, x):
+    start = 0
+    end = len(a) - 1
+    
+    while start < end:
+        mid = (end + start) // 2
+        midNum = a[mid]
+        
+        if midNum > x:
+            end = mid
+        elif midNum <= x:
+            start = mid + 1
+    
+    return start
 
 def findCombinations(jeans, shoes, skirts, tops, budget):
     if budget == 0:
@@ -19,7 +32,7 @@ def findCombinations(jeans, shoes, skirts, tops, budget):
     ans = 0
     for jean_shoe in jeans_shoes:
         money_left = budget - jean_shoe
-        ans += bisect_right(skirts_tops, money_left) 
+        ans += my_bisect(skirts_tops, money_left) 
     
     return ans
     
