@@ -1,60 +1,62 @@
 class Node(object):
-    def __init__(self, key, val):
-        self.val = val
+    
+    def __init__(self, key=None, val=None):
         self.key = key
-        self.next = None
+        self.val = val
         self.prev = None
+        self.next = None
 
 class LRUCache(object):
+    # linked hashmap, keep the least recently used at the tail while the new one at the head
 
     def __init__(self, capacity):
         """
         :type capacity: int
         """
+        self.map = {}
         self.capacity = capacity
-        self.len = 0
-        self.dict = {}
-        self.head = Node(-1, -1)
-        self.tail = Node(-1, -1)
+        self.length = 0
+        self.head = Node()
+        self.tail = Node()
+        
         self.head.next = self.tail
         self.tail.prev = self.head
+    
+    def _move_to_head(self, node):
+        self._remove_node(node)
+        self._add_node_to_head(node)
         
-    def _add_node(self, node):
-        # add new nodes after the head
-        node.prev = self.head
-        node.next = self.head.next
+    def _add_node_to_head(self, node):
+        temp = self.head.next
         
-        self.head.next.prev = node
         self.head.next = node
+        temp.prev = node
+        node.next = temp
+        node.prev = self.head
+        
     
     def _remove_node(self, node):
         node.prev.next = node.next
         node.next.prev = node.prev
     
-    def _move_to_head(self, node):
-        # util to move a node to the head, where we keep Most recently used
-        self._remove_node(node)
-        self._add_node(node)
-    
     def _pop_tail(self):
-        nodeToBePopped = self.tail.prev
-        self._remove_node(nodeToBePopped)
+        to_pop = self.tail.prev
+        self._remove_node(to_pop)
         
-        return nodeToBePopped
+        del self.map[to_pop.key]
+        self.length -= 1
 
     def get(self, key):
         """
         :type key: int
         :rtype: int
         """
-        node = self.dict.get(key, None)
+        node = self.map.get(key, None)
+        if node:
+            self._move_to_head(node)
+            return node.val
         
-        if not node:
-            return -1
-        
-        self._move_to_head(node)
-
-        return node.val
+        return -1
         
 
     def put(self, key, value):
@@ -63,23 +65,21 @@ class LRUCache(object):
         :type value: int
         :rtype: None
         """
-        node = self.dict.get(key, None)
-        if not node:
-            node = Node(key, value)
-            self._add_node(node)
-            self.dict[key] = node
-            if self.len < self.capacity:
-                self.len+=1
-            else:
-                popped = self._pop_tail()
-                del self.dict[popped.key]
-        else:
+        
+        if key in self.map:
+            # update the value if its already in there.
+            node = self.map[key]
             node.val = value
             self._move_to_head(node)
+        else:
+            # at max capacity, we need to pop
+            if self.length == self.capacity:
+                self._pop_tail()
             
-            
-            
-        
+            new_node = Node(key, value)
+            self.length += 1
+            self._add_node_to_head(new_node)
+            self.map[key] = new_node
 
 
 # Your LRUCache object will be instantiated and called as such:
