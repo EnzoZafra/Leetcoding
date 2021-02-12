@@ -5,14 +5,15 @@ class Solution(object):
         :type target: int
         :rtype: List[int]
         """
-        seen = {}
+        if not nums:
+            return None
+        
+        indicies = {x:i for i, x in enumerate(nums)}
         
         for i, num in enumerate(nums):
             diff = target - num
-            
-            if diff in seen:
-                return [i, seen[diff]]
-            else:
-                seen[num] = i
+            index = indicies.get(diff, None)
+            if index and i != index:
+                return [i, index]
         
         return None
