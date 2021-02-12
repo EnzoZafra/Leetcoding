@@ -1,25 +1,31 @@
 class Solution(object):
+    def getStartAndEndTimes(self, interval):
+        return interval[0], interval[1]
     def merge(self, intervals):
         """
         :type intervals: List[List[int]]
         :rtype: List[List[int]]
         """
-       
-        out = []
+        if not intervals:
+            return []
         
-        # O(nlogn)
-        intervals.sort(key=lambda x: x[0])
+        # sort the intervals by their start time
+        intervals.sort(key=lambda x:x[0])
+        out = [] 
+        prev = intervals[0]
         
-        currentInterval = intervals[0]
-        for interval in intervals[1:]: 
-            if interval[0] > currentInterval[1]:
-                out.append(currentInterval)
-                currentInterval = interval
+        for interval in intervals[1:]:
+            prevStart, prevEnd = self.getStartAndEndTimes(prev)
+            currStart, currEnd = self.getStartAndEndTimes(interval)
+            
+            if currStart >= prevStart and currStart <= prevEnd:
+                prev = [prevStart, max(currEnd, prevEnd)]
             else:
-                currentInterval[1] = max(currentInterval[1], interval[1])
-        
-        out.append(currentInterval)
+                out.append(prev)
+                prev = interval
+        out.append(prev)
         return out
-        
+            
+            
         
         
