@@ -1,43 +1,40 @@
 class Solution(object):
-    
-    
-    def dfs_iter(self, grid, i, j):
-        rows = [-1, 0, 0, 1]
-        cols = [0, -1, 1, 0]
-        stack = []
-        
-        stack.append((i,j))
-        
-        # do DFS and mark as visited 
-        while stack:
-            curr = stack.pop()
-            grid[curr[0]][curr[1]] = '0'
-            
-            for index in range(len(rows)):
-                y = curr[0] + rows[index]
-                x = curr[1] + cols[index]
-                
-                # check that its not out of bounds and is land
-                if x >= 0 and y>=0 and x<len(grid[0]) and y<len(grid) and grid[y][x] == '1':
-                    stack.append((y, x))
-            
-            
-        
     def numIslands(self, grid):
         """
         :type grid: List[List[str]]
         :rtype: int
         """
+        if not grid:
+            return 0
         
-        ans = 0
+        moves = [(0,1), (1,0), (-1,0), (0, -1)]
+        rowLen = len(grid)
+        colLen = len(grid[0])
+        # should DFS/BFS and mark all the 1s as 0s.
         
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                # found a new island
-                if grid[i][j] == '1':
-                    ans += 1;
-                    # DFS and mark all "lands" of that island
-                    self.dfs_iter(grid, i, j)
+        counter = 0
         
-        return ans
+        for row in range(rowLen):
+            for col in range(colLen):
+                # we have an unvisited island
+                if grid[row][col] == "1":
+                    counter += 1
                     
+                    # DFS to "visit" all parts of that island
+                    stack = [(row, col)]
+                
+                    while stack:
+                        curr = stack.pop()
+                        currRow = curr[0]
+                        currCol = curr[1]
+                        grid[currRow][currCol] = "0"
+                        
+                        # visit neighbors
+                        for move in moves:
+                            dr = currRow + move[0]
+                            dc = currCol + move[1]
+                            
+                            if dr >= 0 and dr < rowLen and dc >= 0 and dc < colLen and grid[dr][dc] == "1":
+                                stack.append((dr, dc))
+
+        return counter
