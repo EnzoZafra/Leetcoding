@@ -25,7 +25,8 @@ class Solution(object):
             left = recur(node.left)
             right = recur(node.right)
             
-            mid = node == p or node == q
+            # check if the current node is equal to P or Q
+            mid = (node == p or node == q)
             
             if mid + left + right >= 2:
                 self.ans = node
