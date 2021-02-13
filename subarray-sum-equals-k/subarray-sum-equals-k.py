@@ -5,19 +5,19 @@ class Solution(object):
         :type k: int
         :rtype: int
         """
-        d = {}
-        d[0] = 1
-        
         count = 0
-        sumSoFar = 0
+        prefixSum = 0
         
-        for num in nums:
-            sumSoFar += num
+        previousSums = {}
+        previousSums[0] = 1
+        
+        for i in range(len(nums)):
+            prefixSum += nums[i]
+            diff = prefixSum - k
             
-            diff = sumSoFar - k
-            if diff in d:
-                count += d[diff]
-                
-            d[sumSoFar] = d.get(sumSoFar, 0) + 1
-        
+            if diff in previousSums:
+                count += previousSums[diff]
+            
+            previousSums[prefixSum] = previousSums.get(prefixSum, 0) + 1
+
         return count
