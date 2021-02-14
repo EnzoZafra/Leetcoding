@@ -6,7 +6,6 @@
 #         self.right = None
 
 class Solution(object):
-        
     def lowestCommonAncestor(self, root, p, q):
         """
         :type root: TreeNode
@@ -14,30 +13,23 @@ class Solution(object):
         :type q: TreeNode
         :rtype: TreeNode
         """
-        
         self.ans = None
-        
-        def recur(node):
+        def recur(node, p, q):
             if not node:
-                return False
-
-            # need to recur
-            left = recur(node.left)
-            right = recur(node.right)
+                return 0
             
-            # check if the current node is equal to P or Q
-            mid = (node == p or node == q)
+            if node == p or node == q:
+                foundMid = 1
+            else:
+                foundMid = 0
             
-            if mid + left + right >= 2:
+            foundLeft = recur(node.left, p, q)
+            foundRight = recur(node.right, p, q)
+            
+            if foundMid + foundLeft + foundRight >= 2:
                 self.ans = node
-
-            return mid or left or right
-        
-        recur(root)
-        
-        return self.ans
-                    
-         
             
+            return foundMid or foundRight or foundLeft
         
-        
+        recur(root, p, q)
+        return self.ans
