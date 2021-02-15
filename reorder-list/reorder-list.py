@@ -4,51 +4,42 @@
 #         self.val = val
 #         self.next = next
 class Solution(object):
-    def findMiddle(self, head):
-        # find the middle 
-        slow = head
-        fast = head
-        
-        while fast and fast.next:
-            slow = slow.next
-            fast = fast.next.next
-        
-        return slow
-        
-    def reverseList(self, head):
-        curr = head
-        prev = None
-            
-        while curr:
-            temp = curr.next
-            curr.next = prev
-            prev = curr
-            curr = temp
-        
-        return prev
-    
-    def mergeSortedLists(self, first, second):
-        while second and second.next:
-            temp = first.next
-            first.next = second
-            first = temp
-            
-            temp = second.next
-            second.next = first
-            second = temp
-            
-        
+    def print_ll(self, head):
+        temp = head
+        seen = set()
+        while temp:
+            if temp in seen:
+                print('cycle')
+                return
+            else:
+                print(temp.val)
+                seen.add(temp)
+                temp = temp.next
+                
     def reorderList(self, head):
         """
         :type head: ListNode
         :rtype: None Do not return anything, modify head in-place instead.
         """
-        middle = self.findMiddle(head)
-        reversedHead = self.reverseList(middle)
-        self.mergeSortedLists(head, reversedHead)
-
+        stack = []
         
+        temp = head
+        while temp:
+            stack.append(temp)
+            temp = temp.next
         
+        curr = head
         
-
+        while curr:
+            temp = curr.next
+            end = stack.pop()
+            
+            curr.next = end
+            curr = temp
+            end.next = curr
+            
+            if curr and curr.next == end:
+                curr.next = None  
+                break
         
+        return head
