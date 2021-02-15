@@ -4,42 +4,40 @@
 #         self.val = val
 #         self.next = next
 class Solution(object):
+    def merge2Lists(self, list1, list2):
+        dummy = ListNode()
+        curr = dummy
+        
+        while list1 and list2:
+            if list1.val <= list2.val:
+                curr.next = list1
+                list1 = list1.next
+            else:
+                curr.next = list2
+                list2 = list2.next
+            
+            curr = curr.next
+        
+        if list1:
+            curr.next = list1
+        elif list2:
+            curr.next = list2
+        
+        return dummy.next
+            
+        
     def mergeKLists(self, lists):
         """
         :type lists: List[ListNode]
         :rtype: ListNode
         """
-        if not lists:
-            return None
-        
-        numLists = len(lists)
+        n = len(lists)
         interval = 1
         
-        while interval < numLists:
-            for i in range(0, numLists - interval, interval * 2):
-                lists[i] = self.merge2Lists(lists[i], lists[i + interval])
-            
+        while interval < n:
+            for i in range(0, n - interval, interval * 2):
+                lists[i] = self.merge2Lists(lists[i], lists[i+interval])
             interval *= 2
             
-        return lists[0]
-    
-    def merge2Lists(self, l1, l2):
-        head = ListNode()
-        curr = head
+        return lists[0] if n > 0 else None
         
-        while l1 and l2:
-            if l1.val <= l2.val:
-                curr.next = l1
-                l1 = l1.next
-            else:
-                curr.next = l2
-                l2 = l2.next
-            
-            curr = curr.next
-        
-        if l1:
-            curr.next = l1
-        else:
-            curr.next = l2
-        
-        return head.next
