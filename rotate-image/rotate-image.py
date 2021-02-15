@@ -4,27 +4,33 @@ class Solution(object):
         :type matrix: List[List[int]]
         :rtype: None Do not return anything, modify matrix in-place instead.
         """
-        R = len(matrix)
-        C = len(matrix[0])
-       
-        # transpose
-        for row in range(R):
-            for col in range(row, C):
-                tmp = matrix[col][row]
-                matrix[col][row] = matrix[row][col]
-                matrix[row][col] = tmp
+        
+        # to rotate, we have to reflect then transpost
+        
+        
+        rowLen = len(matrix)
+        colLen = len(matrix[0])
         
         # reflect
-        for row in range(R):
-            for col in range(C/2):
-                tmp = matrix[row][col]
-                newCol = C - col - 1
-                
-                matrix[row][col] = matrix[row][newCol]
-                matrix[row][newCol] = tmp
         
-        print(matrix)
-              
+        start = 0
+        end = rowLen - 1
+        while start < end:
+            temp = matrix[end] 
+            matrix[end] = matrix[start]
+            matrix[start] = temp
+            
+            start += 1
+            end -= 1
         
-        
-        
+        # transpose
+        for row in range(rowLen):
+            for col in range(row, colLen):
+                temp = matrix[row][col]
+                matrix[row][col] = matrix[col][row]
+                matrix[col][row] = temp
+
+        print(matrix) 
+
+        return matrix
+    
