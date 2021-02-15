@@ -1,3 +1,4 @@
+[Discussion Post (created on 15/1/2021 at 13:56)](https://leetcode.com/problems/merge-k-sorted-lists/solution/)  
 [Discussion Post (created on 15/1/2021 at 13:53)](https://leetcode.com/problems/merge-k-sorted-lists/solution/)  
 <h2>23. Merge k Sorted Lists</h2><h3>Hard</h3><hr><div><p>You are given an array of <code>k</code> linked-lists <code>lists</code>, each linked-list is sorted in ascending order.</p>
 
