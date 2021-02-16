@@ -1,5 +1,4 @@
 class Solution(object):
-
     def combinationSum2(self, candidates, target):
         """
         :type candidates: List[int]
@@ -7,23 +6,31 @@ class Solution(object):
         :rtype: List[List[int]]
         """
         
-        def backtrack(subset, index, sumSoFar):
-            if target == sumSoFar:
-                result.append(subset[:])
-            elif sumSoFar > target:
+        def backtrack(arr, start, target_left):
+            if target_left == 0:
+                ans.append(arr[:])
                 return
-            else:
-                for i in range(index, len(candidates)):
-                    if i > index and candidates[i] == candidates[i-1]:
-                        continue
+            
+            if target < 0:
+                return
+                
+            for i in range(start, len(candidates)):
+                if i > start and candidates[i] == candidates[i-1]:
+                    continue
+                
+                num = candidates[i]
+                
+                if target_left - num < 0:
+                    break
                     
-                    subset.append(candidates[i])
-                    backtrack(subset, i+1, sumSoFar + candidates[i])
-                    subset.pop()
+                arr.append(num)
+                backtrack(arr, i+1, target_left-num)
+                arr.pop()
+                 
         
-        result = []
         candidates.sort()
-        backtrack([], 0, 0)
-        
-        return result
-        
+        ans = []
+        backtrack([], 0, target)
+        return ans
+                
+                
