@@ -14,19 +14,24 @@ class Solution(object):
         """
         if not node:
             return None
-        visited = {}
         
-        stack = []
-        stack.append(node)
-        visited[node] = Node(node.val, [])
-        while stack:
-            curr = stack.pop()
-                     
+        root_clone = Node(node.val)
+
+        queue = deque()
+        queue.append(node)
+        
+        visited = {}
+        visited[node] = root_clone
+        while queue:
+            curr = queue.popleft()
+            
             for neighbor in curr.neighbors:
                 if neighbor not in visited:
-                    visited[neighbor] = Node(neighbor.val, [])
-                    stack.append(neighbor)
+                    cloneNeighbor = Node(neighbor.val)
+                    visited[neighbor] = cloneNeighbor
+                    queue.append(neighbor)
+                    
                 visited[curr].neighbors.append(visited[neighbor])
                 
         return visited[node]
-                     
+                
