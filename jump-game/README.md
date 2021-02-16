@@ -1,4 +1,3 @@
-[Discussion Post (created on 15/1/2021 at 21:44)](https://leetcode.com/problems/jump-game/solution/)  
 <h2>55. Jump Game</h2><h3>Medium</h3><hr><div><p>Given an array of non-negative integers <code>nums</code>, you are initially positioned at the <strong>first index</strong> of the array.</p>
 
 <p>Each element in the array represents your maximum jump length at that position.</p>
