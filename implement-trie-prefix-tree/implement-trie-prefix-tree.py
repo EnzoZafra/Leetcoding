@@ -1,19 +1,18 @@
 class TrieNode(object):
-    def __init__(self, val):
+    def __init__(self, val=''):
         self.val = val
-        self.children = [None for _ in range(26)]
-        self.word = False
+        self.children = {}
+        self.isWord = False
+    
 
 class Trie(object):
+
     def __init__(self):
         """
         Initialize your data structure here.
         """
-        self.root = TrieNode(None)
-    
-    def _char_to_index(self, char):
-        ascii = ord(char) - ord('a')
-        return ascii
+        self.root = TrieNode()
+        
 
     def insert(self, word):
         """
@@ -21,22 +20,20 @@ class Trie(object):
         :type word: str
         :rtype: None
         """
-        i = 0
-        curr = self.root
-        while i < len(word):
-            char = word[i]
-            index = self._char_to_index(char)
-            charNode = curr.children[index] 
-            
-            if not charNode:
+        ptr = 0 
+        curr = self.root 
+        while ptr < len(word):
+            char = word[ptr] 
+            if char in curr.children:
+                curr = curr.children[char]
+            else:
                 newNode = TrieNode(char)
-                curr.children[index] = newNode
-                charNode = newNode
+                curr.children[char] = newNode
+                curr = newNode
             
-            curr = charNode
-            i += 1
-        
-        curr.word = True
+            ptr += 1
+                
+        curr.isWord = True
 
     def search(self, word):
         """
@@ -44,21 +41,19 @@ class Trie(object):
         :type word: str
         :rtype: bool
         """
-        i = 0
-        curr = self.root
-        while i < len(word):
-            char = word[i] 
-            index = self._char_to_index(char)
-            charNode = curr.children[index]
-            
-            if not charNode:
-                return False
+        ptr = 0 
+        curr = self.root 
+        while ptr < len(word):
+            char = word[ptr] 
+            if char in curr.children:
+                curr = curr.children[char]
             else:
-                curr = charNode
-                i += 1
-        
-        return curr.word
+                return False
             
+            ptr += 1
+                
+        return curr.isWord
+        
 
     def startsWith(self, prefix):
         """
@@ -66,19 +61,17 @@ class Trie(object):
         :type prefix: str
         :rtype: bool
         """
-        
-        i = 0
-        curr = self.root
-        while i < len(prefix):
-            char = prefix[i]
-            index = self._char_to_index(char)
-            charNode = curr.children[index]
-            
-            if not charNode:
-                return False
+        ptr = 0 
+        curr = self.root 
+        while ptr < len(prefix):
+            char = prefix[ptr] 
+            if char in curr.children:
+                curr = curr.children[char]
             else:
-                curr = charNode
-                i += 1
+                return False
+            
+            ptr += 1
+                
         return True
         
 
