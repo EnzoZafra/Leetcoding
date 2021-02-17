@@ -4,20 +4,19 @@ class Solution(object):
         :type matrix: List[List[int]]
         :rtype: None Do not return anything, modify matrix in-place instead.
         """
-        zeroRows = set()
-        zeroCols = set()
+        zero_rows = set()
+        zero_columns = set()
+        
         for row in range(len(matrix)):
             for col in range(len(matrix[0])):
                 if matrix[row][col] == 0:
-                    zeroRows.add(row)
-                    zeroCols.add(col)
-                    
+                    zero_rows.add(row)
+                    zero_columns.add(col)
+        
         for row in range(len(matrix)):
-            if row in zeroRows:
-                matrix[row] = [0 for _ in range(len(matrix[0]))]
-                
             for col in range(len(matrix[0])):
-                if col in zeroCols:
+                if row in zero_rows or col in zero_columns:
                     matrix[row][col] = 0
         
         return matrix
+                    
