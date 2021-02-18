@@ -15,15 +15,26 @@ class Solution(object):
         :rtype: int
         """
         
-        def recur(concatenated, start):
-            if self.isUnique(concatenated):
-                self.maxLen = max(self.maxLen, len(concatenated))     
+        dp = [set()]
+        maxLen = 0
+        
+        for sub in arr:
+            if not self.isUnique(sub):
+                continue
             
-            for i in range(start, len(arr)):
-                concat = concatenated + arr[i]
-                recur(concat, i+1)
-                concat = concatenated
+            currUsed = set(sub)
+            for previousSets in dp[:]:
+                # if there is an intersection with the set, skip
+                if currUsed & previousSets:
+                    continue 
+                    
+                # append the union
+                union = currUsed | previousSets
+                dp.append(union)
                 
-        self.maxLen = 0 
-        recur('', 0)
-        return self.maxLen
+                maxLen = max(maxLen, len(union))
+                
+                #print(dp)
+        return maxLen
+          
+        
