@@ -1,3 +1,4 @@
+[Discussion Post (created on 26/1/2021 at 14:6)](https://leetcode.com/problems/graph-valid-tree/solution/)  
 <h2>261. Graph Valid Tree</h2><h3>Medium</h3><hr><div><p>Given <code>n</code> nodes labeled from <code>0</code> to <code>n-1</code> and a list of undirected edges (each edge is a pair of nodes), write a function to check whether these edges make up a valid tree.</p>
 
 <p><strong>Example 1:</strong></p>
