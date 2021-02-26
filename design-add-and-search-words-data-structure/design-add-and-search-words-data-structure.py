@@ -1,11 +1,8 @@
 class TrieNode(object):
     def __init__(self, val):
         self.val = val
-        self.word = False
-        self.children = [None for _ in range(26)]
-    
-    def getChildIndex(self, char):
-        return ord(char) - ord('a')
+        self.isWord = False
+        self.children = {}
 
 class WordDictionary(object):
 
@@ -15,66 +12,60 @@ class WordDictionary(object):
         """
         self.root = TrieNode('')
     
-    def printTrie(self):
-        s = []
-        s.append((self.root, ''))
+    def _printTrie(self):
+        print('printing trie')
         
-        while s:
-            curr, nodeString = s.pop()
-            nodeString += curr.val
-            if curr.word:
-                print(nodeString)
+        stack = [(self.root, '')]
+        while stack:
+            curr, stringSoFar = stack.pop()
+            stringSoFar = stringSoFar + curr.val 
+            if curr.isWord:
+                print(stringSoFar)
+            
             for child in curr.children:
-                if child:
-                    s.append((child, nodeString))
+                stack.append((curr.children[child], stringSoFar))
 
     def addWord(self, word):
         """
         :type word: str
         :rtype: None
         """
-        curr = self.root 
-        for char in word:
-            index = curr.getChildIndex(char)
-            charNode = curr.children[index]
-            
-            if not charNode:
-                charNode = TrieNode(char)
-                curr.children[index] = charNode
-            
-            curr = charNode
+        curr = self.root
         
-        curr.word = True
+        for char in word:
+            if char in curr.children:
+                node = curr.children[char]
+            else:
+                node = TrieNode(char)
+                curr.children[char] = node
+            
+            curr = node
+        curr.isWord = True
     
-    def search_recur(self, start, word):
-        curr = start
+    def search_from_node(self, node, word):
+        curr = node
+        
         for i, char in enumerate(word):
             if char == '.':
                 for child in curr.children:
-                    if child:
-                        test = self.search_recur(child, word[i+1:])
-                        if test:
-                            return True
-                return False
-            else:
-                index = curr.getChildIndex(char)
-                charNode = curr.children[index]
-
-                if not charNode:
-                    return False
-                else:
-                    curr = charNode
+                    if self.search_from_node(curr.children[child], word[i+1:]):
+                        return True
                     
-        return curr.word
+                return False
+                
+            elif char in curr.children:
+                curr = curr.children[char]
+            else:
+                return False
         
-
+        return curr.isWord
+    
     def search(self, word):
         """
         :type word: str
         :rtype: bool
         """
-        return self.search_recur(self.root, word)
-        
+        return self.search_from_node(self.root, word)
 
 
 # Your WordDictionary object will be instantiated and called as such:
