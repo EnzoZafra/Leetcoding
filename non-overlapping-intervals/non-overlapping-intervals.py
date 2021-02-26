@@ -4,21 +4,25 @@ class Solution(object):
         :type intervals: List[List[int]]
         :rtype: int
         """
-        intervals.sort(key=lambda x:x[0])
-        
         if not intervals:
             return 0
         
-        count = 0
+        out = 0
+        intervals.sort(key=lambda x:x[0])
+        
         prev = intervals[0]
         for interval in intervals[1:]:
-            if prev[0] <= interval[0] and prev[1] > interval[0]:
-                count += 1
+            start = prev[0]
+            end = prev[1]
+            
+            # if the previous interval isnt done yet and the new one is starting
+            if end > interval[0]:
+                out += 1
                 
-                # keep the one that ends earlier
-                if prev[1] > interval[1]:
-                    prev = interval 
+                # keep the new one
+                if end > interval[1]:
+                    prev = interval
             else:
-                prev = interval
+                prev = interval 
         
-        return count
+        return out
