@@ -8,22 +8,18 @@
 class Codec:
 
     def serialize(self, root):
-        """Encodes a tree to a single string.
-        
-        :type root: TreeNode
-        :rtype: str
+        """
+        Encodes a tree to a single string.
         """
         def postorder(root):
             return postorder(root.left) + postorder(root.right) + [root.val] if root else []
-        
-        return ' '.join(map(str, postorder(root)))
-        
+        result = ' '.join(map(str, postorder(root)))
+        print(result)
+        return result
 
     def deserialize(self, data):
-        """Decodes your encoded data to tree.
-        
-        :type data: str
-        :rtype: TreeNode
+        """
+        Decodes your encoded data to tree.
         """
         def helper(lower = float('-inf'), upper = float('inf')):
             if not data or data[-1] < lower or data[-1] > upper:
@@ -37,6 +33,7 @@ class Codec:
         
         data = [int(x) for x in data.split(' ') if x]
         return helper()
+        
         
 
 # Your Codec object will be instantiated and called as such:
