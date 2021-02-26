@@ -4,14 +4,11 @@ class Solution(object):
         :type nums: List[int]
         :rtype: List[int]
         """
-        length = len(nums)
-        constraint = length / 3
-        counter = collections.defaultdict(int)
-        out = set()
+        counter = Counter(nums)
         
-        for num in nums:
-            counter[num] += 1
-            if counter[num] > constraint:
-                out.add(num)
+        out = []
+        for num in counter:
+            if counter[num] > len(nums) / 3:
+                out.append(num) 
         
         return out
