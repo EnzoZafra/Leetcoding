@@ -4,10 +4,11 @@ class Solution(object):
         :type nums: List[int]
         :rtype: int
         """
-       
-        numsSet = set(nums)
+        sumTotal = 0
         for i in range(len(nums)+1):
-            if i not in numsSet:
-                return i
+            sumTotal += i
         
-        return -1
+        for num in nums:
+            sumTotal -= num
+        
+        return sumTotal
