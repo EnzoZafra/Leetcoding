@@ -13,20 +13,19 @@ class Solution(object):
         :type q: TreeNode
         :rtype: TreeNode
         """
-        if not root:
-            return None
         
         parent_val = root.val
         p_val = p.val
         q_val = q.val
         
-        # in left subtree
-        if p_val < parent_val and q_val < parent_val:
-            return self.lowestCommonAncestor(root.left, p, q)
-        
-        # in right subtree
-        elif p_val > parent_val and q_val > parent_val:
+        if p_val > parent_val and q_val > parent_val:
             return self.lowestCommonAncestor(root.right, p, q)
-        
+        elif p_val < parent_val and q_val < parent_val:
+            return self.lowestCommonAncestor(root.left, p, q)
         else:
             return root
+        
+            
+            
+            
+            
