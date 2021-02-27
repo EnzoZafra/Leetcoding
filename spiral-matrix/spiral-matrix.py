@@ -1,45 +1,44 @@
 class Solution(object):
-    def getNextPosition(self, r, c, direction):
-        move = self.moves[direction] 
-        dr = r + move[0]
-        dc = c + move[1]
-
-        return dr, dc
-        
+    def isInBounds(self, row, col, rowLen, colLen):
+        return 0 <= row < rowLen and 0 <= col < colLen
+    
     def spiralOrder(self, matrix):
         """
         :type matrix: List[List[int]]
         :rtype: List[int]
         """
         
-        # right, down, left, up continuously
-        self.moves = [(0,1), (1,0), (0,-1), (-1,0)]
-        
         rowLen = len(matrix)
         colLen = len(matrix[0])
+        numItems = rowLen * colLen
         
-        seen = set()
-        ans = []
-        r = 0
-        c = 0
-        direction = 0
+        directions = [(0,1), (1,0), (0,-1), (-1,0)]
+        directionIdx = 0
         
-        for _ in range(rowLen * colLen):
-            ans.append(matrix[r][c])
-            seen.add((r,c))
+        visited = set()
+        out = []
+        
+        curr = (0,0)
+        
+        for _ in range(numItems):
+            currRow, currCol = curr
+            out.append(matrix[currRow][currCol])
+            visited.add(curr)
             
-            dr, dc = self.getNextPosition(r, c, direction)
+            nextmove = directions[directionIdx]
+            dr = currRow + nextmove[0] 
+            dc = currCol + nextmove[1]
             
-            if 0 <= dr < rowLen and 0 <= dc < colLen and (dr, dc) not in seen:
-                r = dr
-                c = dc
+            
+            if not self.isInBounds(dr,dc,rowLen,colLen) or (dr, dc) in visited:
+                directionIdx += 1
+                directionIdx = directionIdx % 4
                 
-            # we hit a visited or we've hit a boundary
-            else:
-                direction = (direction + 1) % 4
-                dr, dc = self.getNextPosition(r, c, direction)
-                r = dr
-                c = dc
-        return ans
-             
-        
+                nextmove = directions[directionIdx]
+                dr = currRow + nextmove[0] 
+                dc = currCol + nextmove[1]
+                
+            curr = (dr,dc)
+            
+                
+        return out
