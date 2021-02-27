@@ -1,25 +1,22 @@
 class Solution(object):
-    def findDuplicateTemp(self, nums):
+    def findDuplicate(self, nums):
         """
         :type nums: List[int]
         :rtype: int
         """
-        maxNum = max(nums)
-        actualSum = sum(nums)
-        expectedSum = 0
         
-        for i in range(1, maxNum+1):
-            expectedSum += i
+        # Find the intersection point of the two runners.
+        tortoise = hare = nums[0]
+        while True:
+            tortoise = nums[tortoise]
+            hare = nums[nums[hare]]
+            if tortoise == hare:
+                break
         
-        return actualSum - expectedSum
-    
-    def findDuplicate(self, nums):
-        seen = set() 
+        # Find the "entrance" to the cycle.
+        tortoise = nums[0]
+        while tortoise != hare:
+            tortoise = nums[tortoise]
+            hare = nums[hare]
         
-        for num in nums:
-            if num in seen:
-                return num
-            else:
-                seen.add(num)
-        
-        return -1
+        return hare
