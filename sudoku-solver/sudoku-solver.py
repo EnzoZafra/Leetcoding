@@ -9,16 +9,16 @@ class Solution:
             return not (d in rows[row] or d in columns[col] or d in boxes[box_index(row, col)])
         
         def place_number(d, row, col):
-            rows[row][d] += 1
-            columns[col][d] += 1
-            boxes[box_index(row, col)][d] += 1
+            rows[row].add(d)
+            columns[col].add(d)
+            boxes[box_index(row, col)].add(d)
             
             board[row][col] = str(d)
             
         def remove_number(d, row, col):
-            del rows[row][d]
-            del columns[col][d]
-            del boxes[box_index(row, col)][d]
+            rows[row].remove(d)
+            columns[col].remove(d)
+            boxes[box_index(row, col)].remove(d)
             
             board[row][col] = '.'    
             
@@ -58,17 +58,17 @@ class Solution:
             else:
                 place_next_numbers(row, col)
                     
-        # box size
         n = 3
-        # row size
-        N = n * n
+        N = len(board)
+        
         # lambda function to compute box index
         box_index = lambda row, col: (row // n ) * n + col // n
         
         # init rows, columns and boxes
-        rows = [defaultdict(int) for i in range(N)]
-        columns = [defaultdict(int) for i in range(N)]
-        boxes = [defaultdict(int) for i in range(N)]
+        rows = [set() for i in range(N)]
+        columns = [set() for i in range(N)]
+        boxes = [set() for i in range(N)]
+        
         for i in range(N):
             for j in range(N):
                 if board[i][j] != '.': 
