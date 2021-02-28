@@ -1,3 +1,4 @@
+[Discussion Post (created on 27/1/2021 at 21:6)](https://leetcode.com/problems/coin-change/solution/)  
 <h2>322. Coin Change</h2><h3>Medium</h3><hr><div><p>You are given coins of different denominations and a total amount of money <i>amount</i>. Write a function to compute the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return <code>-1</code>.</p>
 
 <p>You may assume that you have an infinite number of each kind of coin.</p>
