@@ -5,18 +5,18 @@ class Solution(object):
         :rtype: List[str]
         """
         
-        ans = []
-        def backtrack(string, leftParenthesisCount, rightParenthesisCount):
-            if leftParenthesisCount == n and rightParenthesisCount == n:
-                ans.append(string)
+        def recur(string, left, right):
+            if left == n and right == n:
+                self.out.append(string)
                 return
             
-            if leftParenthesisCount < n:
-                backtrack(string + '(', leftParenthesisCount + 1, rightParenthesisCount)
-                
-            # we can only add a right parenthesis if there is already a left one.
-            if rightParenthesisCount < leftParenthesisCount:
-                backtrack(string + ')', leftParenthesisCount, rightParenthesisCount+1)
-        
-        backtrack('', 0, 0)
-        return ans
+            # only add a closing bracket if theres more opening brackets
+            if left > right:
+                recur(string + ')', left, right+1)
+            
+            if left < n:
+                recur(string + '(', left+1, right)
+            
+        self.out = [] 
+        recur('', 0, 0)
+        return self.out
