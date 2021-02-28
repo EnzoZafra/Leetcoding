@@ -4,18 +4,19 @@ class Solution(object):
         :type nums: List[int]
         :rtype: int
         """
-        if not nums:
-            return 0
+        max_product = nums[0]
+        min_product = nums[0]
+        result = max_product
         
-        minSoFar = nums[0]
-        maxSoFar = nums[0]
-        result = maxSoFar
-        
-        for curr in nums[1:]:
-            temp = max(curr, max(maxSoFar*curr, minSoFar*curr))
-            minSoFar = min(curr, min(maxSoFar*curr, minSoFar*curr))
+        for i in range(1, len(nums)):
+            num = nums[i] 
             
-            maxSoFar = temp
-            result = max(maxSoFar, result)
+            # put in temp so we can calculate max_product 
+            temp = min(max_product * num, min_product * num, num)
+            max_product = max(max_product * num, min_product * num, num)
+            
+            min_product = temp
+            
+            result = max(max_product, result)
         
         return result
