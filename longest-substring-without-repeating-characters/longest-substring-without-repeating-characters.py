@@ -4,21 +4,33 @@ class Solution(object):
         :type s: str
         :rtype: int
         """
-        counter = {}
-        maxLen = 0
+        if not s:
+            return 0
+        
+        counter = collections.defaultdict(int)
+        repeating = 0
+        
+        longest = 1
         start = 0
         end = 0
         
         while end < len(s):
             endChar = s[end]
-            counter[endChar] = counter.get(endChar, 0) + 1
+            counter[endChar] += 1
+            if counter[endChar] > 1:
+                repeating += 1
             
-            while counter[endChar] > 1:
+            while repeating > 0:
+                
                 startChar = s[start]
-                counter[startChar] = counter.get(startChar, 0) - 1
+                counter[startChar] -= 1
+                if counter[endChar] == 1:
+                    repeating -= 1
+                
                 start += 1
             
-            maxLen = max(maxLen, end-start+1)
+            longest = max(longest, end - start + 1)
             end += 1
         
-        return maxLen
+        return longest
+                
