@@ -4,37 +4,34 @@ class Solution(object):
         :type grid: List[List[str]]
         :rtype: int
         """
-        if not grid:
-            return 0
         
-        moves = [(0,1), (1,0), (-1,0), (0, -1)]
-        rowLen = len(grid)
-        colLen = len(grid[0])
-        # should DFS/BFS and mark all the 1s as 0s.
+        def isValidMove(row, col):
+            return 0 <= row < self.R and 0 <= col < self.C and grid[row][col] == "1"
         
-        counter = 0
-        
-        for row in range(rowLen):
-            for col in range(colLen):
-                # we have an unvisited island
-                if grid[row][col] == "1":
-                    counter += 1
-                    
-                    # DFS to "visit" all parts of that island
-                    stack = [(row, col)]
+        def dfs(row, col):
+            stack = [(row,col)]
+            
+            while stack:
+                currRow, currCol = stack.pop()
+                grid[currRow][currCol] = "0"
                 
-                    while stack:
-                        curr = stack.pop()
-                        currRow = curr[0]
-                        currCol = curr[1]
-                        grid[currRow][currCol] = "0"
-                        
-                        # visit neighbors
-                        for move in moves:
-                            dr = currRow + move[0]
-                            dc = currCol + move[1]
-                            
-                            if dr >= 0 and dr < rowLen and dc >= 0 and dc < colLen and grid[dr][dc] == "1":
-                                stack.append((dr, dc))
-
-        return counter
+                for move in self.moves:
+                    dr = currRow + move[0]
+                    dc = currCol + move[1]
+                    
+                    if isValidMove(dr,dc):
+                        stack.append((dr,dc))
+        
+        self.R = len(grid)
+        self.C = len(grid[0])
+         
+        self.moves = [(1,0), (0,1), (-1,0), (0,-1)]
+        
+        count = 0
+        for row in range(self.R):
+            for col in range(self.C):
+                if grid[row][col] == '1':
+                    dfs(row, col)
+                    count += 1
+        
+        return count
