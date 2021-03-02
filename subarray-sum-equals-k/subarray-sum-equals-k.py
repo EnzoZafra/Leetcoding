@@ -1,23 +1,18 @@
-class Solution(object):
-    def subarraySum(self, nums, k):
-        """
-        :type nums: List[int]
-        :type k: int
-        :rtype: int
-        """
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        
+        prefixSums = collections.defaultdict(int)
+        prefixSums[0] = 1
+        sumSoFar = 0
         count = 0
-        prefixSum = 0
         
-        previousSums = {}
-        previousSums[0] = 1
+        for num in nums:
+            sumSoFar += num
+            diff = sumSoFar - k
+            
+            if diff in prefixSums:
+                count += prefixSums[diff]
+            
+            prefixSums[sumSoFar] += 1
         
-        for i in range(len(nums)):
-            prefixSum += nums[i]
-            diff = prefixSum - k
-            
-            if diff in previousSums:
-                count += previousSums[diff]
-            
-            previousSums[prefixSum] = previousSums.get(prefixSum, 0) + 1
-
         return count
