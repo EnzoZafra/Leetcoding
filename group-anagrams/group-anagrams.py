@@ -1,16 +1,26 @@
-class Solution(object):
-    def groupAnagrams(self, strs):
-        """
-        :type strs: List[str]
-        :rtype: List[List[str]]
-        """
-        sortedStrings = {string : ''.join(sorted(string)) for string in strs}
-        print(sortedStrings)
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
         
-        groupAnagrams = collections.defaultdict(list)
+        def getIndex(char):
+            return ord(char) - ord('a')
         
+        anagramMap = collections.defaultdict(list)
         for string in strs:
-            sortedString = sortedStrings[string]
-            groupAnagrams[sortedString].append(string)
+            counter = [0 for _ in range(26)]
+            for char in string:
+                index = getIndex(char)
+                counter[index] += 1
+            
+            key = ','.join([str(x) for x in counter])
+            print(counter, key)
+            anagramMap[key].append(string)
         
-        return groupAnagrams.values()
+        out = []
+        print(anagramMap)
+        for key, item in anagramMap.items():
+            out.append(item)
+        
+        return out
+            
+        
+        
