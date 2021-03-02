@@ -1,3 +1,4 @@
+[Discussion Post (created on 2/2/2021 at 14:7)](https://leetcode.com/problems/search-in-rotated-sorted-array/solution/)  
 <h2>33. Search in Rotated Sorted Array</h2><h3>Medium</h3><hr><div><p>You are given an integer array <code>nums</code> sorted in ascending order (with <strong>distinct</strong> values), and an integer <code>target</code>.</p>
 
 <p>Suppose that <code>nums</code> is rotated at some pivot unknown to you beforehand (i.e., <code>[0,1,2,4,5,6,7]</code> might become <code>[4,5,6,7,0,1,2]</code>).</p>
