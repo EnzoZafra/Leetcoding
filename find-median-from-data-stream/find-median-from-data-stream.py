@@ -1,38 +1,32 @@
-class MedianFinder(object):
+class MedianFinder:
 
     def __init__(self):
         """
         initialize your data structure here.
         """
-        self.medianIndex = -1
-        self.array = []
+        # max heap
+        self.lo = []
+        
+        # min heap
+        self.hi = []
         
 
-    def addNum(self, num):
-        """
-        :type num: int
-        :rtype: None
-        """
-        if not self.array:
-            self.array.append(num)
-        else:
-            # find where to put via binary search
-            index = bisect_left(self.array, num, 0, len(self.array)) 
-            self.array.insert(index, num)
-
-    def findMedian(self):
-        """
-        :rtype: float
-        """
-        n = len(self.array)
-        if n % 2 == 1:
-            return self.array[n/2]
-        else:
-            firstNum = float(self.array[(n/2) - 1])
-            secondNum = float(self.array[n/2])
-            return (firstNum + secondNum) / 2
-            
+    def addNum(self, num: int) -> None:
+        heapq.heappush(self.lo, -1 * num)
         
+        # rebalance
+        popped = -1 * heapq.heappop(self.lo)
+        heapq.heappush(self.hi, popped)
+        
+        if len(self.lo) < len(self.hi):
+            popped = heapq.heappop(self.hi)
+            heapq.heappush(self.lo, -1 * popped)
+
+    def findMedian(self) -> float:
+        if len(self.lo) > len(self.hi):
+            return float(-1 * self.lo[0])
+        else:
+            return float(self.hi[0] - self.lo[0]) / 2
 
 
 # Your MedianFinder object will be instantiated and called as such:
