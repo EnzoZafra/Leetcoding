@@ -1,34 +1,23 @@
 # Definition for a binary tree node.
-# class TreeNode(object):
+# class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
 #         self.val = val
 #         self.left = left
 #         self.right = right
-class Solution(object):
-    def isValidBST(self, root):
-        """
-        :type root: TreeNode
-        :rtype: bool
-        """
+class Solution:
+    def isValidBST(self, root: TreeNode) -> bool:
         
-        # do an inorder traversal, check that strictly increasing
-        stack = []
-        prev = None
-        curr = root
-        
-        while stack or curr:
-            while curr:
-                stack.append(curr)
-                curr = curr.left
-                
-            # visit:
-            curr = stack.pop()
-            if prev and prev.val >= curr.val:
+        def recur(node, lower_limit, upper_limit):
+            if not node:
+                return True
+            
+            if lower_limit > node.val or node.val > upper_limit:
                 return False
             
-            prev = curr
-            curr = curr.right
-       
-        return True
+            left = recur(node.left, lower_limit, node.val - 1)
+            right = recur(node.right, node.val + 1, upper_limit)
+            print(left, right)
             
+            return left and right
         
+        return recur(root, float('-inf'), float('inf'))
