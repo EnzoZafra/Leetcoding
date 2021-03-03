@@ -1,36 +1,29 @@
-class Solution(object):
-    def rotate(self, matrix):
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
         """
-        :type matrix: List[List[int]]
-        :rtype: None Do not return anything, modify matrix in-place instead.
+        Do not return anything, modify matrix in-place instead.
         """
         
-        # to rotate, we have to reflect then transpost
+        # transpose then reflect
+        
+        R = len(matrix)
+        C = len(matrix[0])
+        
+        def transpose(matrix):
+            for row in range(R):
+                for col in range(row, R):
+                    matrix[col][row], matrix[row][col] = matrix[row][col], matrix[col][row]
+        
+        def reflect(matrix):
+            for row in range(R):
+                for col in range(C // 2):
+                    matrix[row][col], matrix[row][C-col-1] = matrix[row][C-col-1], matrix[row][col]
+                    
+        
+        transpose(matrix)
+        reflect(matrix)
+        print(matrix)
+      
         
         
-        rowLen = len(matrix)
-        colLen = len(matrix[0])
         
-        # reflect
-        
-        start = 0
-        end = rowLen - 1
-        while start < end:
-            temp = matrix[end] 
-            matrix[end] = matrix[start]
-            matrix[start] = temp
-            
-            start += 1
-            end -= 1
-        
-        # transpose
-        for row in range(rowLen):
-            for col in range(row, colLen):
-                temp = matrix[row][col]
-                matrix[row][col] = matrix[col][row]
-                matrix[col][row] = temp
-
-        print(matrix) 
-
-        return matrix
-    
