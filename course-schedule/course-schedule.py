@@ -1,4 +1,4 @@
-class Solution(object):
+class Solution:
     def build_adjacency_graph_indegrees(self, numCourses, prerequisites):
         graph = {x:[] for x in range(numCourses)}
         indegrees = {x:0 for x in range(numCourses)}
@@ -44,5 +44,3 @@ class Solution(object):
         return True if len(sortedOrder) == numCourses else False
            
              
-        
-        
