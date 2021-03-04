@@ -1,45 +1,50 @@
 # Definition for singly-linked list.
-# class ListNode(object):
+# class ListNode:
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
-class Solution(object):
-    def print_ll(self, head):
-        temp = head
-        seen = set()
-        while temp:
-            if temp in seen:
-                print('cycle')
-                return
-            else:
-                print(temp.val)
-                seen.add(temp)
-                temp = temp.next
+class Solution:
+    def reorderList(self, head: ListNode) -> None:
+        """
+        Do not return anything, modify head in-place instead.
+        """
+        
+        def find_middle(head):
+            slow = head
+            fast = head
+            
+            while fast and fast.next:
+                slow = slow.next
+                fast = fast.next.next
+            
+            return slow
+        
+        def reverse(head):
+            prev = None
+            curr = head
+            
+            while curr:
+                temp = curr.next
+                curr.next = prev
+                prev = curr
+                curr = temp
+            
+            print(prev.val)
+            return prev
+        
+        def merge(l1, l2):
+            while l2.next:
+                temp = l1.next
+                l1.next = l2 
+                l1 = temp
                 
-    def reorderList(self, head):
-        """
-        :type head: ListNode
-        :rtype: None Do not return anything, modify head in-place instead.
-        """
-        stack = []
+                temp = l2.next
+                l2.next = l1
+                l2 = temp
+                
+        if not head:
+            return None
         
-        temp = head
-        while temp:
-            stack.append(temp)
-            temp = temp.next
-        
-        curr = head
-        
-        while curr:
-            temp = curr.next
-            end = stack.pop()
-            
-            curr.next = end
-            curr = temp
-            end.next = curr
-            
-            if curr and curr.next == end:
-                curr.next = None  
-                break
-        
-        return head
+        middle = find_middle(head)
+        l2 = reverse(middle)
+        merge(head, l2)
