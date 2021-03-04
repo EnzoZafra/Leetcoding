@@ -1,28 +1,18 @@
-class Solution(object):
-    def maxArea(self, height):
-        """
-        :type height: List[int]
-        :rtype: int
-        """
-        
-        # two pointer, one at the start and one at the end
-        # height = min(height[start], height[end])
-        # width = end - start + 1
-        # keep the ptr with the longer bar
-        
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
         start = 0
         end = len(height) - 1
-        maxArea = 0 
+        
+        maxArea = float('-inf')
         while start < end:
-            height1 = height[start]
-            height2 = height[end]
-            maxHeight = min(height1, height2)
             width = end - start
-            maxArea = max(maxArea, maxHeight * width)
+            curr_height = min(height[start], height[end])
+            maxArea = max(maxArea, width * curr_height)
             
-            if height1 > height2:
-                end -= 1
-            else:
+            if height[start] < height[end]:
                 start += 1
-                
+            else:
+                end -= 1
+        
         return maxArea
+            
