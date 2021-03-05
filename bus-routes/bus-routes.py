@@ -1,42 +1,28 @@
-class Solution(object):
-    def numBusesToDestination(self, routes, source, target):
-        """
-        :type routes: List[List[int]]
-        :type source: int
-        :type target: int
-        :rtype: int
-        """
-        to_routes = collections.defaultdict(set)
+class Solution:
+    def numBusesToDestination(self, routes: List[List[int]], source: int, target: int) -> int:
+        # for each bus, get a map of what stop they can go to
         
+        stopToRouteMap = collections.defaultdict(set)
         for i, route in enumerate(routes):
-            for j in route:
-                to_routes[j].add(i)
-                
-        print(to_routes)
+            for stop in route:
+                stopToRouteMap[stop].add(i)
         
-        queue = deque()
-        queue.append((source, 0))
+        queue = deque([(source, 0)])
+        visited = set([source])
         
-        seen = set([source])
         while queue:
-            busNumber, bussesTaken = queue.popleft()
-            if busNumber == target: 
-                return bussesTaken
+            curr_stop, depth = queue.popleft()
+            if curr_stop == target:
+                return depth
             
-            #print(busNumber, to_routes[busNumber])
-            
-            # get the bus stops that the bus number goes to
-            for i in to_routes[busNumber]:
+            for route in stopToRouteMap[curr_stop]:
+                for stop in routes[route]:
+                    if stop not in visited:
+                        queue.append((stop, depth + 1))
+                        visited.add(stop)
                 
-                # for each bus in this bus stop
-                #print(routes[i])
-                for j in routes[i]:
-                    
-                    # take the bus and see if we end up at the target
-                    if j not in seen:
-                        queue.append((j, bussesTaken + 1))
-                        #print(j, bussesTaken+1)
-                        seen.add(j)
-                        
-                routes[i] = []  # seen route
+                routes[route] = []
+        
         return -1
+            
+                
