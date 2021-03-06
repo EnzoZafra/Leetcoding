@@ -1,71 +1,39 @@
-import heapq
-
-class Solution(object):
-    def findTheCity(self, n, edges, distanceThreshold):
-        return self.dijkstras(n, edges, distanceThreshold) 
+class Solution:
+    def findTheCity(self, n: int, edges: List[List[int]], distanceThreshold: int) -> int:
         
-    def floyd(self, n, edges, distanceThreshold):
-        """
-        :type n: int
-        :type edges: List[List[int]]
-        :type dptanceThreshold: int
-        :rtype: int
-        """
-
-        dp = [[float('inf')] * n for _ in xrange(n)]
         
-        for source, dest, weight in edges:
-            dp[source][dest] = weight
-            dp[dest][source] = weight
-        
-        # base case
-        for i in range(n):
-            dp[i][i] = 0
-        
-        for k in range(n):
-            for i in range(n):
-                for j in range(n):
-                    dp[i][j] = min(dp[i][j], dp[i][k] + dp[k][j])
-        
-            
-        res = {sum(d <= distanceThreshold for d in dp[i]): i for i in xrange(n)}
-        return res[min(res)]
-    
-    def dijkstras(self, n, edges, distanceThreshold):
-        
-        graph = collections.defaultdict(list)
-        for source, dest, weight in edges:
-            graph[dest].append((source,weight))
-            graph[source].append((dest,weight))
-         
-        neighbors = {}
-        minNeighborNode = -1
-        minNeighbors = float('inf')
-        
-        for node in range(n):
-            heap = [(0, node)]
-            visited = set([node])
+        def dijkstras(graph, start):
+            heap = [(0, start)]
+            visited = set([start])
             neighbor = []
             
             while heap:
                 dist, curr = heapq.heappop(heap)
                 
                 if curr not in visited:
-                    neighbor.append(curr)  
-                    
+                    neighbor.append(curr)
+                
                 visited.add(curr)
+                
                 for nextNeighbor, nextDistance in graph[curr]:
-                    if nextNeighbor not in visited and distanceThreshold >= dist+nextDistance:
-                        heapq.heappush(heap, (dist+nextDistance, nextNeighbor))
+                    if nextNeighbor not in visited and nextDistance + dist <= distanceThreshold:
+                        heapq.heappush(heap, (nextDistance + dist, nextNeighbor))
             
-            length = len(neighbor)
-            neighbors[node] = neighbor
-            if minNeighbors >= length:
-                minNeighbors = length
-                
-                minNeighborNode = node
-        print(neighbors)    
-        return minNeighborNode
-                
+            return len(neighbor)
         
         
+        graph = collections.defaultdict(list)
+        for n1, n2, weight in edges:
+            graph[n1].append((n2,weight))
+            graph[n2].append((n1,weight))
+        
+        minNeighbors = float('inf')
+        out = -1
+        for i in range(n):
+            neighborsLen = dijkstras(graph, i)
+            
+            if neighborsLen <= minNeighbors:
+                minNeighbors = neighborsLen
+                out = i
+            
+        return out 
