@@ -1,9 +1,5 @@
-class Solution(object):
-    def shortestPathBinaryMatrix(self, grid):
-        """
-        :type grid: List[List[int]]
-        :rtype: int
-        """
+class Solution:
+    def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
         if grid[0][0] == 1 or grid[-1][-1] == 1: 
             return -1
         
@@ -30,4 +26,3 @@ class Solution(object):
                     queue.append((dr, dc, count+1))
         
         return -1
-    
