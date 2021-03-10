@@ -1,52 +1,33 @@
-class CheckInItem(object):
-    def __init__(self, station, time):
-        self.station = station
-        self.time = time
-
-class UndergroundSystem(object):
+class UndergroundSystem:
 
     def __init__(self):
-        self.checkedIn = {}
-        self.avgTimes = {}
-
-    def checkIn(self, id, stationName, t):
-        """
-        :type id: int
-        :type stationName: str
-        :type t: int
-        :rtype: None
-        """
-        self.checkedIn[id] = CheckInItem(stationName, t)
+        self.inTransit = {}
+        self.history = collections.defaultdict(list)
         
 
-    def checkOut(self, id, stationName, t):
-        """
-        :type id: int
-        :type stationName: str
-        :type t: int
-        :rtype: None
-        """
-        sourceNode = self.checkedIn[id]
-        del self.checkedIn[id]
-        duration = t - sourceNode.time
+    def checkIn(self, id: int, stationName: str, t: int) -> None:
+        if id in self.inTransit:
+            return None
         
-        timeKey = sourceNode.station + "->" + stationName
+        else:
+            self.inTransit[id] = (stationName, t)
         
-        avgTimesList = self.avgTimes.get(timeKey, [])
-        avgTimesList.append(duration)
-        self.avgTimes[timeKey] = avgTimesList
 
-    def getAverageTime(self, startStation, endStation):
-        """
-        :type startStation: str
-        :type endStation: str
-        :rtype: float
-        """
-        # should hash the key?
-        timeKey = startStation + "->" + endStation
-        avgTimesList = self.avgTimes[timeKey]
-        print(avgTimesList)
-        return float(sum(avgTimesList)) / float(len(avgTimesList))
+    def checkOut(self, id: int, stationName: str, t: int) -> None:
+        in_station, in_time = self.inTransit[id]
+        del self.inTransit[id]
+        
+        key = (in_station, stationName)
+        total_time = t - in_time
+        
+        self.history[key].append(total_time)
+        
+
+    def getAverageTime(self, startStation: str, endStation: str) -> float:
+        key = (startStation, endStation)
+        times = self.history[key]
+        
+        return sum(times)/len(times)
         
 
 
