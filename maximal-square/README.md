@@ -1,4 +1,3 @@
-[Discussion Post (created on 6/2/2021 at 21:23)](https://leetcode.com/problems/maximal-square/solution/)  
 <h2>221. Maximal Square</h2><h3>Medium</h3><hr><div><p>Given an <code>m x n</code> binary <code>matrix</code> filled with <code>0</code>'s and <code>1</code>'s, <em>find the largest square containing only</em> <code>1</code>'s <em>and return its area</em>.</p>
 
 <p>&nbsp;</p>
