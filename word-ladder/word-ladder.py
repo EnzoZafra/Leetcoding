@@ -42,4 +42,3 @@ class Solution(object):
                     queue.append((neighbor, count + 1))
         
         return 0
-            
