@@ -1,40 +1,39 @@
-class Solution(object):
-    def findMedianSortedArrays(self, nums1, nums2):
-        """
-        :type nums1: List[int]
-        :type nums2: List[int]
-        :rtype: float
-        """
-        merged = []
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        n = len(nums1)
+        m = len(nums2)
         
-        # merge the two sorted arrays, then get the middle number?
-        index1 = 0
-        index2 = 0
+        out = []
         
-        while index1 < len(nums1) and index2 < len(nums2):
-            num1 = nums1[index1]     
-            num2 = nums2[index2]
+        mid = (n + m) // 2
+        
+        isEven = False
+        if (n + m) % 2 == 0:
+            isEven = True
+        
+        p1 = 0
+        p2 = 0
+        
+        count = 0
+        while p1 < n or p2 < m:
+            num1 = nums1[p1] if p1 < n else float('inf')
+            num2 = nums2[p2] if p2 < m else float('inf')
+             
+            if count == mid:
+                num_to_choose = min(num1, num2)
+                if not isEven:
+                    return num_to_choose
+                else:
+                    return (out[-1] + num_to_choose) / 2
             
-            if num1 <= num2:
-                merged.append(num1)
-                index1 += 1
+            count += 1
+            
+            if num1 < num2:
+                p1 += 1
+                out.append(num1)
             else:
-                merged.append(num2)
-                index2 += 1
+                p2 += 1
+                out.append(num2)
         
-        if index1 < len(nums1):
-            merged = merged + nums1[index1:]
-        else:
-            merged = merged + nums2[index2:]
-        
-        length = len(merged)
-        if length % 2 == 0:
-            # if even, we need to take the average of middle two numbers
-            mid = int(floor(length/2))
-            return (merged[mid-1] + merged[mid])/ float(2)
-        else:
-            mid = int(ceil(length/2))
-            return (merged[mid]) 
-        
-        
-        
+        return -1
+            
