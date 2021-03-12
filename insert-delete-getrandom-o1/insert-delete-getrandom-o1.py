@@ -1,6 +1,6 @@
 from random import choice
 
-class RandomizedSet(object):
+class RandomizedSet:
 
     def __init__(self):
         """
@@ -8,58 +8,47 @@ class RandomizedSet(object):
         """
         self.dict = {}
         self.list = []
-        
 
-    def insert(self, val):
+    def insert(self, val: int) -> bool:
         """
         Inserts a value to the set. Returns true if the set did not already contain the specified element.
-        :type val: int
-        :rtype: bool
         """
         if val in self.dict:
             return False
-        else:
-            self.list.append(val)
-            index = len(self.list) - 1
-            self.dict[val] = index
-            
-            return True
-    
-    def _swap_last_element_to_index(self, index):
-        temp = self.list[index]
         
-        lastindex = -1
-        last_item = self.list[lastindex]
+        self.dict[val] = len(self.list)
+        self.list.append(val)
         
-        self.list[index] = self.list[lastindex]
-        self.list[lastindex] = temp
-        self.dict[last_item] = index
-    
-    def _pop_last_item(self):
-        val = self.list.pop()
-        del self.dict[val]
+        return True
+        
 
-    def remove(self, val):
+    def remove(self, val: int) -> bool:
         """
         Removes a value from the set. Returns true if the set contained the specified element.
-        :type val: int
-        :rtype: bool
         """
-        if val not in self.dict:
+        index = self.dict.get(val, None)
+        if index is None:
             return False
-        else:
-            index = self.dict[val]
-            self._swap_last_element_to_index(index) 
-            self._pop_last_item()
-            return True
+        
+        last_element = self.list[-1]
+        last_element_index = self.dict[last_element]
+        
+        # swap
+        self.dict[last_element] = index
+        del self.dict[val]
+        
+        self.list[index] = last_element
+        self.list.pop()
+        
+        return True
         
 
-    def getRandom(self):
+    def getRandom(self) -> int:
         """
         Get a random element from the set.
-        :rtype: int
         """
         return choice(self.list)
+        
 
 
 # Your RandomizedSet object will be instantiated and called as such:
