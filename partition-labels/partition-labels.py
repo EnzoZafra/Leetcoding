@@ -1,29 +1,19 @@
-class Solution(object):
-    def partitionLabels(self, S):
-        """
-        :type S: str
-        :rtype: List[int]
-        """
-        # preprocess the string, and calculate max(i) for each character
-        # traverse string from left to right
-        # as we go right, we get the max i of the characters in our current substring
-        # if current i = max, then we have a partition
+class Solution:
+    def partitionLabels(self, S: str) -> List[int]:
+        last = {x:i for i, x in enumerate(S)}
+        print(last)
         
-        farthest_seen = {char:i for i, char in enumerate(S)}
-        print(farthest_seen)
+        out = []
+        offset = 0
+        lastSeenSubstring = 0
+        for i, x in enumerate(S):
+            lastSeen = last[x]
+            lastSeenSubstring = max(lastSeenSubstring, lastSeen)
+            if i == lastSeenSubstring:
+                print(i,x,lastSeen)
+                out.append(i - offset + 1)
+                offset = i + 1
         
-        partitions = []
-        maxSoFar = -1
-        length = 0
-        
-        for i, char in enumerate(S):
-            length += 1
-            farthestForChar = farthest_seen[char]
-            maxSoFar = max(farthestForChar, maxSoFar)
+        return out
             
-            if i == maxSoFar:
-                partitions.append(length)
-                maxSoFar = -1
-                length = 0
-        
-        return partitions
+            
