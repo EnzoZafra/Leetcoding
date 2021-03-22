@@ -1,20 +1,14 @@
-class Solution(object):
-    def topKFrequent(self, words, k):
-        """
-        :type words: List[str]
-        :type k: int
-        :rtype: List[str]
-        """
-        counts = Counter(words)
-        maxHeap = []
-        out = []
-        for word in counts:
-            # if our maxheap is full, we need to push and pop
-            heapq.heappush(maxHeap, (-1*counts[word], word))
+class Solution:
+    def topKFrequent(self, words: List[str], k: int) -> List[str]:
         
+        counts = Counter(words)
+        heap = []
+        for word, count in counts.items():
+            heapq.heappush(heap, (-count, word))
+        
+        out = [] 
         while k > 0:
-            out.append(heappop(maxHeap)[1])
+            out.append(heapq.heappop(heap)[1]) 
             k -= 1
         
         return out
-                
